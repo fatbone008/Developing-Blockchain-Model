@@ -3,11 +3,23 @@ let app = express()
 let bodyParser = require('body-parser')
 app.use(bodyParser.json())
 
+let port = 3000
+
+process.argv.forEach((val, index, array) => {
+    port = array[2]
+})
+
+if(port == undefined){
+    port = 3000
+}
+
 let Block = require('./block')
 let Blockchain = require('./blockchain')
 let Transaction = require('./transaction')
+let BlockchainNode = require('./BlockchainNode')
 
 let transactions = []
+let nodes = []
 let genisisBlock = new Block()
 let blockchain = new Blockchain(genisisBlock)
 
@@ -15,11 +27,28 @@ app.get('/', function (req, res,next) {
     res.send('hello world');
 })
 
+app.post('/nodes/register', function (req, res) {
+    let nodesLists = req.body.urls;
+    
+    nodesLists.forEach(function (nodeDictionary) {
+        let node = new BlockchainNode(nodeDictionary['url'])
+        nodes.push(node)
+    })
+
+    res.json(nodes)
+})
+
+app.get('/nodes', function (req, res) {
+    res.json(nodes)
+})
+
 app.get('/mine', function (req, res) {
     let block = blockchain.getNextBlock(transactions)
     blockchain.addBlock(block)
+    transactions = []
     res.json(block)
 })
+
 app.post('/transaction', function (req, res) {
     let to = req.body.to
     let from = req.body.from
@@ -51,8 +80,8 @@ app.get('/blockchain', function (req, res, next) {
     //
     res.json(blockchain)
 })
-app.listen(3000, function () {
-    console.log("prot start at localhost:3000")
+app.listen(port, function () {
+    console.log("prot start at localhost:", port)
 })
 //
 //
