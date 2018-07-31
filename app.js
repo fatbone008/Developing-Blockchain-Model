@@ -1,6 +1,8 @@
 let express = require('express')
 let app = express()
 let bodyParser = require('body-parser')
+let fetch = require('node-fetch')
+
 app.use(bodyParser.json())
 
 let port = 3000
@@ -25,6 +27,22 @@ let blockchain = new Blockchain(genisisBlock)
 
 app.get('/', function (req, res,next) {
     res.send('hello world');
+})
+
+app.get('/resolve', function (req, res, next) {
+
+    nodes.forEach(node => {
+        fetch(node.url + '/blockchain')
+            .then(response => {
+                return response.json()
+            })
+            .then(otherBlockchain => {
+                // console.log(blockchain)
+                if(blockchain.blocks.length < otherBlockchain.blocks.length){
+                    blockchain = otherBlockchain
+                }
+            })
+    })
 })
 
 app.post('/nodes/register', function (req, res) {

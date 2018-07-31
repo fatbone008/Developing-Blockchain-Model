@@ -11,6 +11,10 @@ class Blockchain {
     this.addBlock(genesisBlock)
   }
 
+    /**
+     * 添加一个新的Block到区块链中
+     * @param block
+     */
   addBlock(block) {
 
     if(this.blocks.length == 0) {
@@ -22,6 +26,11 @@ class Blockchain {
 
   }
 
+    /**
+     * 根据现有交易记录，生成一个新的block
+     * @param transactions
+     * @returns {Block}
+     */
   getNextBlock(transactions) {
 
       let block = new Block()
