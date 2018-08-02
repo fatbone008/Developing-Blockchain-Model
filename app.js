@@ -2,6 +2,7 @@ let express = require('express')
 let app = express()
 let bodyParser = require('body-parser')
 let fetch = require('node-fetch')
+let sha256 = require('js-sha256')
 
 app.use(bodyParser.json())
 
@@ -68,11 +69,15 @@ app.get('/mine', function (req, res) {
 })
 
 app.post('/transaction', function (req, res) {
-    let to = req.body.to
-    let from = req.body.from
-    let amount = req.body.amount
+    // let to = req.body.to
+    // let from = req.body.from
+    // let amount = req.body.amount
 
-    let transaction = new Transaction(from, to, amount)
+    let driverLicenseNumber = sha256(req.body.driverLicenseNumber);
+    let violationDate = req.body.violationDate;
+    let violationType = req.body.violationType;
+
+    let transaction = new Transaction(driverLicenseNumber, violationDate, violationType)
 
     transactions.push(transaction)
 
