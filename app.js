@@ -3,6 +3,7 @@ let app = express()
 let bodyParser = require('body-parser')
 let fetch = require('node-fetch')
 let sha256 = require('js-sha256')
+let DrivingRecordSmartContract = require('./smartContract')
 
 app.use(bodyParser.json())
 
@@ -77,7 +78,11 @@ app.post('/transaction', function (req, res) {
     let violationDate = req.body.violationDate;
     let violationType = req.body.violationType;
 
+
     let transaction = new Transaction(driverLicenseNumber, violationDate, violationType)
+
+    let drivingRecordSmartContract = new DrivingRecordSmartContract()
+    drivingRecordSmartContract.apply(transaction, blockchain.blocks)
 
     transactions.push(transaction)
 

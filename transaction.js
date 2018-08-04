@@ -10,7 +10,7 @@ class Transaction {
     this.driverLicenseNumber = driverLicenseNumber;
     this.violationDate = violationDate;
     this.violationType = violationType;
-    this.noOfViolation = 1;
+    this.noOfViolations = 1;
     this.isDriverLicenseSuspended = false;
   }
 }
