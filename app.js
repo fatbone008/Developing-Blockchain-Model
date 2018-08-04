@@ -69,6 +69,12 @@ app.get('/mine', function (req, res) {
     res.json(block)
 })
 
+app.get('/driving-records/:drivingLicenseNumber', function (req, res) {
+    let drivingLicenseNumber = sha256(req.params.drivingLicenseNumber);
+    let transactions = blockchain.transactionsByDrivingLicenseNumber(drivingLicenseNumber);
+    res.json(transactions);
+})
+
 app.post('/transaction', function (req, res) {
     // let to = req.body.to
     // let from = req.body.from

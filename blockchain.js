@@ -47,6 +47,21 @@ class Blockchain {
       return block
   }
 
+  transactionsByDrivingLicenseNumber(drivingLicenseNumber) {
+      let transactions = []
+
+      this.blocks.forEach( block => {
+
+          block.transactions.forEach(transaction => {
+              if(transaction.driverLicenseNumber == drivingLicenseNumber){
+                  transactions.push(transaction);
+              }
+          })
+      })
+
+      return transactions;
+  }
+
   getPreviousBlock() {
     return this.blocks[this.blocks.length - 1]
   }
